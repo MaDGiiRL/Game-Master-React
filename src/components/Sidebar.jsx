@@ -4,10 +4,6 @@ import ReleaseYearDropdown from "./ReleaseYearDropdown";
 import AlphabeticalOrderDropdown from "./AlphabeticalOrderDropdown";
 
 export default function Sidebar({ filters, setFilters }) {
-    const genres = [
-        "Action", "Adventure", "RPG", "Shooter", "Puzzle",
-        "Racing", "Sports", "Strategy", "Indie"
-    ];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
