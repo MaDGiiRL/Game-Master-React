@@ -1,4 +1,5 @@
 import LazyLoadGameImage from "./LazyLoadGameImage";
+import { Link } from 'react-router';
 
 export default function CardGame({ game }) {
     const { name, background_image, released, genres, rating } = game;
@@ -35,14 +36,17 @@ export default function CardGame({ game }) {
                 </p>
 
                 <div className="flex justify-end mt-auto">
-                    <a
+                    <button className="text-indigo-400 hover:text-indigo-200 text-sm font-medium">
+                        <Link to={`/games/${game.slug}/${game.id}`}>➤ Scopri di più</Link>
+                    </button>
+                    {/* <a
                         href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-indigo-400 hover:text-indigo-200 text-sm font-medium"
                     >
                         ➤ Scopri di più
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </article>

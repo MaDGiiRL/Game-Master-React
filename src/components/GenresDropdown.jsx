@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 export default function GenresDropdown({ selectedGenre, onSelectGenre }) {
     const [genres, setGenres] = useState(null);
@@ -31,7 +32,6 @@ export default function GenresDropdown({ selectedGenre, onSelectGenre }) {
             </summary>
             {error && <small className="text-red-400">{error}</small>}
             <ul className="bg-gray-800 text-white mt-2 rounded shadow-lg max-h-100 overflow-y-auto p-2">
-                {/* Opzione per rimuovere filtro */}
                 <li
                     className={`cursor-pointer px-2 py-1 rounded ${selectedGenre === null ? "bg-indigo-600" : "hover:bg-indigo-500"
                         }`}
@@ -47,7 +47,7 @@ export default function GenresDropdown({ selectedGenre, onSelectGenre }) {
                             }`}
                         onClick={() => onSelectGenre(genre.name)}
                     >
-                        {genre.name}
+                        <Link to={`/games/${genre.slug}`}>{genre.name}</Link>
                     </li>
                 ))}
             </ul>
