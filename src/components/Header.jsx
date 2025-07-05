@@ -2,7 +2,7 @@ import logo from '../public/logo.png';
 
 export default function Header() {
     return (
-        <header className="bg-gradient-to-r from-gray-900 to-gray-800 text-white fixed top-0 w-full z-50">
+        <header className="bg-gradient-to-r from-gray-900 to-gray-800 text-white fixed top-0 w-full z-50 mb-5">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 <div className="flex">
                     <img src={logo} alt="Logo" style={{ width: '50px' }} />

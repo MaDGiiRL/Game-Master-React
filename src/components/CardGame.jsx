@@ -1,3 +1,5 @@
+import LazyLoadGameImage from "./LazyLoadGameImage";
+
 export default function CardGame({ game }) {
     const { name, background_image, released, genres, rating } = game;
 
@@ -6,11 +8,7 @@ export default function CardGame({ game }) {
 
             {/* Immagine */}
             <div className="relative">
-                <img
-                    src={background_image}
-                    alt={name}
-                    className="w-full h-48 object-cover group-hover:opacity-80 transition-opacity duration-300"
-                />
+                <LazyLoadGameImage image={background_image} />
 
                 {/* Overlay */}
                 <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -21,7 +19,6 @@ export default function CardGame({ game }) {
 
             {/* Corpo card */}
             <div className="flex flex-col justify-between h-full p-4 space-y-2">
-                {/* Generi */}
                 <div className="flex flex-wrap gap-2">
                     {genres && genres.map((genre) => (
                         <span
@@ -33,12 +30,10 @@ export default function CardGame({ game }) {
                     ))}
                 </div>
 
-                {/* Rating */}
                 <p className="text-sm text-gray-400">
                     ⭐ Rating: <span className="text-white font-medium">{rating || 'N/A'}</span>
                 </p>
 
-                {/* Link allineato a destra */}
                 <div className="flex justify-end mt-auto">
                     <a
                         href="#"

@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+details.dropdown>summary {
+    list-style: none;
+}
+
+details.dropdown>summary::marker {
+    display: none;
+}

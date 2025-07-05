@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CardGame from "../components/CardGame";
+import Error from "./error/index"
 
 export default function Home() {
 
@@ -26,9 +27,10 @@ export default function Home() {
         load();
     }, []);
 
+
     return (
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 my-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 my-5" style={{ marginTop: '50px' }}>
             {error && <article>{error}</article>}
             {data && data.results.map((game) => (
                 <CardGame key={game.id} game={game} />
