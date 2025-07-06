@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/supabase-client";
 import logo from "../public/logo.png";
+import SessionContext from "../context/SessionContext"
 
 export default function Header() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const { session } = useContext(SessionContext);
 
     useEffect(() => {
-        // Recupera utente all'avvio
+
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user);
@@ -16,12 +18,11 @@ export default function Header() {
 
         getUser();
 
-        // Listener per cambiamenti login/logout
         const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
             setUser(session?.user || null);
         });
 
-        // Cleanup listener
+
         return () => {
             listener.subscription.unsubscribe();
         };
@@ -30,7 +31,7 @@ export default function Header() {
     const handleLogout = async () => {
         await supabase.auth.signOut();
         setUser(null);
-        navigate("/"); // o redirect a /login
+        navigate("/");
     };
 
     return (
@@ -46,9 +47,13 @@ export default function Header() {
                 <div className="flex space-x-4 items-center">
                     {user ? (
                         <>
-                            <span className="text-sm font-medium text-indigo-300">
-                                Ciao, {user.user_metadata?.username || user.email}
-                            </span>
+                            <Link
+                                to="/account"
+                                className="flex items-center gap-1 text-sm font-medium text-indigo-300 hover:underline hover:text-indigo-100 transition-colors"
+                            >
+                                <span className="text-lg">👤</span>
+                                {user.user_metadata?.username || user.email}
+                            </Link>
                             <button
                                 onClick={handleLogout}
                                 className="bg-red-600 hover:bg-red-700 transition-colors text-sm font-medium px-5 py-2 rounded-xl shadow-lg"
