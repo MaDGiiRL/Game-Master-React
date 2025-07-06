@@ -4,6 +4,7 @@ import { Link } from "react-router";
 export default function GenresDropdown({ selectedGenre, onSelectGenre }) {
     const [genres, setGenres] = useState(null);
     const [error, setError] = useState(null);
+    const [open, setOpen] = useState(true);
 
     const initialUrl = "https://api.rawg.io/api/genres?key=7e2a905b584040ff9809f7bbd5dd7ed4";
 
@@ -26,31 +27,31 @@ export default function GenresDropdown({ selectedGenre, onSelectGenre }) {
     }, []);
 
     return (
-        <details className="dropdown">
-            <summary className="text-xl font-bold text-indigo-400 mb-2 cursor-pointer">
+        <div className="mb-4">
+            <button
+                onClick={() => setOpen(!open)}
+                className="text-xl font-bold text-indigo-400 cursor-pointer"
+            >
                 🎮 Generi {selectedGenre ? `: ${selectedGenre}` : ""}
-            </summary>
-            {error && <small className="text-red-400">{error}</small>}
-            <ul className="bg-gray-800 text-white mt-2 rounded shadow-lg max-h-100 overflow-y-auto p-2">
-                <li
-                    className={`cursor-pointer px-2 py-1 rounded ${selectedGenre === null ? "bg-indigo-600" : "hover:bg-indigo-500"
-                        }`}
-                    onClick={() => onSelectGenre(null)}
-                >
-                    Tutti
-                </li>
+                <span className="ml-2">{open ? "▲" : "▼"}</span>
+            </button>
 
-                {genres && genres.results.map((genre) => (
-                    <li
-                        key={genre.id}
-                        className={`cursor-pointer px-2 py-1 rounded ${selectedGenre === genre.name ? "bg-indigo-600" : "hover:bg-indigo-500"
-                            }`}
-                        onClick={() => onSelectGenre(genre.name)}
-                    >
-                        <Link to={`/games/${genre.slug}`}>{genre.name}</Link>
-                    </li>
-                ))}
-            </ul>
-        </details>
+            {open && (
+                <ul className="bg-gray-800 text-white mt-2 rounded shadow-lg p-2">
+                    {error && <li className="text-red-400">{error}</li>}
+                    {genres?.results.map((genre) => (
+                        <li key={genre.id}>
+                            <Link
+                                to={`/games/${genre.slug}`}
+                                className="block px-2 py-1 hover:bg-gray-700 rounded"
+                                onClick={() => onSelectGenre?.(genre.name)} // opzionale
+                            >
+                                {genre.name}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     );
 }

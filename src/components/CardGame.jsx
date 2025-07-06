@@ -39,14 +39,6 @@ export default function CardGame({ game }) {
                     <button className="text-indigo-400 hover:text-indigo-200 text-sm font-medium">
                         <Link to={`/games/${game.slug}/${game.id}`}>➤ Scopri di più</Link>
                     </button>
-                    {/* <a
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-indigo-400 hover:text-indigo-200 text-sm font-medium"
-                    >
-                        ➤ Scopri di più
-                    </a> */}
                 </div>
             </div>
         </article>
