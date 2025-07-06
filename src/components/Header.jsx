@@ -14,12 +14,19 @@ export default function Header() {
                 </Link>
 
                 <div className="flex space-x-4">
-                    <a href="" className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-sm font-medium px-5 py-2 rounded-xl shadow-lg">
+                    <Link
+                        to="/"
+                        className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-sm font-medium px-5 py-2 rounded-xl shadow-lg"
+                    >
                         Login
-                    </a>
-                    <a href="" className="bg-transparent border border-indigo-500 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-colors text-sm font-medium px-5 py-2 rounded-xl shadow-lg">
+                    </Link>
+
+                    <Link
+                        to="/register"
+                        className="bg-transparent border border-indigo-500 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-colors text-sm font-medium px-5 py-2 rounded-xl shadow-lg"
+                    >
                         Registrati
-                    </a>
+                    </Link>
                 </div>
             </div>
         </header>
