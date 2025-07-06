@@ -5,46 +5,54 @@ import Searchbar from "./Searchbar";
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Funzione per aprire/chiudere sidebar
     const toggleSidebar = () => {
-        setIsOpen(!isOpen);
+        setIsOpen((prev) => !prev);
     };
 
     return (
         <>
+            {/* Bottone filtri mobile */}
+            <div className="md:hidden w-full mb-4 px-4">
+                <button
+                    onClick={toggleSidebar}
+                    className="bg-neutral-800 text-white px-4 py-3 rounded-xl w-full text-left flex justify-between items-center font-bold"
+                    aria-expanded={isOpen}
+                    aria-controls="sidebar"
+                    aria-label="Toggle filtri"
+                >
+                    Filtri
+                    <span
+                        className={`inline-block transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
+                            }`}
+                    >
+                        ▼
+                    </span>
+                </button>
+            </div>
 
-            <button
-                onClick={toggleSidebar}
-                className="fixed top-4 left-4 z-50 p-2 rounded-md bg-indigo-600 text-white sm:hidden"
-                aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-            >
-                {isOpen ? "✕" : "☰"}
-            </button>
-
-
+            {/* Sidebar */}
             <aside
+                id="sidebar"
                 className={`
           fixed top-0 left-0 h-full bg-gray-900 text-white p-6 rounded-r-xl shadow-xl
           w-64
           transform transition-transform duration-300 ease-in-out
-          sm:relative sm:translate-x-0
-          ${isOpen
-                        ? "translate-x-0"
-                        : "-translate-x-full"
-                    }
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:relative md:translate-x-0 md:rounded-none md:shadow-none
+          z-50
         `}
             >
                 <GenresDropdown />
                 <Searchbar />
             </aside>
 
-
+            {/* Overlay cliccabile solo su mobile quando sidebar aperta */}
             {isOpen && (
                 <div
                     onClick={toggleSidebar}
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
                     aria-hidden="true"
-                ></div>
+                />
             )}
         </>
     );

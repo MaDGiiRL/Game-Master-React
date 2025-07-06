@@ -18,7 +18,7 @@ export default function SearchPage() {
 
     return (
         <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-white mb-6">
+            <h1 className="text-3xl font-bold text-white mb-6" style={{ marginTop: 50, marginBottom: 70 }}>
                 🔎 Risultati per: <span className="text-indigo-400">{query}</span>
             </h1>
 

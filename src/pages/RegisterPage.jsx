@@ -161,6 +161,26 @@ export default function RegisterPage() {
                     )}
                 </div>
 
+                {/* Password */}
+                <div>
+                    <label htmlFor="password" className="block mb-1 font-medium">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formState.password}
+                        onChange={setField("password")}
+                        onBlur={onBlur("password")}
+                        aria-invalid={isInvalid("password")}
+                        required
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.password ? "border-red-500" : "border-gray-300"
+                            }`}
+                    />
+                    {formErrors.password && (
+                        <small className="text-red-500">{formErrors.password}</small>
+                    )}
+                </div>
+
                 {/* Submit Button */}
                 <div>
                     <button
