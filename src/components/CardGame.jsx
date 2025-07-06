@@ -1,11 +1,11 @@
 import LazyLoadGameImage from "./LazyLoadGameImage";
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function CardGame({ game }) {
     const { name, background_image, released, genres, rating } = game;
 
     return (
-        <article className="relative h-[300px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
+        <article className="relative h-[350px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
 
             {/* Immagine */}
             <div className="relative">
@@ -13,7 +13,9 @@ export default function CardGame({ game }) {
 
                 {/* Overlay */}
                 <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <h2 className="text-white text-lg font-bold truncate">{name}</h2>
+                    <Link to={`/games/${game.slug}/${game.id}`}>
+                        <h2 className="text-white text-lg font-bold truncate hover:underline">{name}</h2>
+                    </Link>
                     <p className="text-gray-300 text-sm">{released}</p>
                 </div>
             </div>
@@ -22,12 +24,13 @@ export default function CardGame({ game }) {
             <div className="flex flex-col justify-between h-full p-4 space-y-2">
                 <div className="flex flex-wrap gap-2">
                     {genres && genres.map((genre) => (
-                        <span
-                            key={genre.id}
-                            className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-full"
+                        <Link
+                            to={`/games/${genre.slug}`}
+                            className="bg-indigo-600 px-3 py-1 rounded-full text-xs inline-block hover:bg-indigo-700 transition"
+                            onClick={() => onSelectGenre?.(genre.name)}
                         >
                             {genre.name}
-                        </span>
+                        </Link>
                     ))}
                 </div>
 
@@ -36,9 +39,12 @@ export default function CardGame({ game }) {
                 </p>
 
                 <div className="flex justify-end mt-auto">
-                    <button className="text-indigo-400 hover:text-indigo-200 text-sm font-medium">
-                        <Link to={`/games/${game.slug}/${game.id}`}>➤ Scopri di più</Link>
-                    </button>
+                    <Link
+                        to={`/games/${game.slug}/${game.id}`}
+                        className="text-indigo-400 hover:text-indigo-200 text-sm font-medium"
+                    >
+                        ➤ Scopri di più
+                    </Link>
                 </div>
             </div>
         </article>
