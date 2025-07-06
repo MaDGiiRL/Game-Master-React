@@ -22,23 +22,27 @@ export default function CardGame({ game }) {
 
             {/* Corpo card */}
             <div className="flex flex-col justify-between h-full p-4 space-y-2">
-                <div className="flex flex-wrap gap-2">
+
+                {/* Generi */}
+                <div className="flex flex-wrap gap-2 pt-2">
                     {genres && genres.map((genre) => (
                         <Link
+                            key={genre.id || `${genre.slug}-${genre.name}`}
                             to={`/games/${genre.slug}`}
                             className="bg-indigo-600 px-3 py-1 rounded-full text-xs inline-block hover:bg-indigo-700 transition"
-                            onClick={() => onSelectGenre?.(genre.name)}
                         >
                             {genre.name}
                         </Link>
                     ))}
                 </div>
 
-                <p className="text-sm text-gray-400">
+                {/* Rating */}
+                <p className="text-sm text-gray-400 pt-5">
                     ⭐ Rating: <span className="text-white font-medium">{rating || 'N/A'}</span>
                 </p>
 
-                <div className="flex justify-end mt-auto">
+                {/* Link Dettagli */}
+                <div className="flex justify-end mt-auto pb-5">
                     <Link
                         to={`/games/${game.slug}/${game.id}`}
                         className="text-indigo-400 hover:text-indigo-200 text-sm font-medium"

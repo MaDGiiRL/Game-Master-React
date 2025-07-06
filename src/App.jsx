@@ -4,6 +4,7 @@ import GenrePage from "./pages/GenrePage";
 import Layout from "../src/layout/Layout";
 import GamePage from "./pages/GamePage";
 import TagPage from "./pages/TagPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/games/:genre" element={<GenrePage />} />
         <Route path="/games/:slug/:id" element={<GamePage />} />
         <Route path="/tags/:tag" element={<TagPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Route>
     </Routes>
   )
