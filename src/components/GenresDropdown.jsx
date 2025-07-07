@@ -45,10 +45,10 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
     const limitItems = (arr, showAll) => showAll ? arr : arr.slice(0, 3);
 
     return (
-        <div className="mb-6 space-y-6 text-white">
+        <div className="mb-15 space-y-15 text-white">
             {/* GENRES */}
             <div>
-                <button onClick={() => setOpenGenres(!openGenres)} className="text-xl font-bold text-indigo-400">
+                <button onClick={() => setOpenGenres(!openGenres)} className="text-xl font-bold text-indigo-400 mt-12">
                     🎮 Generi {selectedGenre ? `: ${selectedGenre}` : ""} <span>{openGenres ? "▲" : "▼"}</span>
                 </button>
 

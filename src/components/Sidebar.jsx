@@ -12,7 +12,7 @@ export default function Sidebar() {
     return (
         <>
             {/* Bottone filtri mobile */}
-            <div className="md:hidden w-full mb-4 px-4">
+            <div className="md:hidden w-full mb-4 px-4" >
                 <button
                     onClick={toggleSidebar}
                     className="bg-neutral-800 text-white px-4 py-3 rounded-xl w-full text-left flex justify-between items-center font-bold"
@@ -31,7 +31,7 @@ export default function Sidebar() {
             </div>
 
             {/* Sidebar */}
-            <aside
+            <aside style={{ zIndex: 9999 }}
                 id="sidebar"
                 className={`
           fixed top-0 left-0 h-full bg-gray-900 text-white p-6 rounded-r-xl shadow-xl
