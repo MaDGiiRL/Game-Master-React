@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetchSolution from "../hook/useFetchSolution";
-import ToggleFavorite from "../components/ToggleFavorite"; // ⚠️ adatta il path se necessario
+import ToggleFavorite from "../components/ToggleFavorite";
+import ChatBox from "../components/ChatBox";
 
 export default function GamePage() {
     const { id } = useParams();
@@ -24,7 +25,7 @@ export default function GamePage() {
     const DESCRIPTION_LIMIT = 800;
 
     const renderDescription = () => {
-        if (!data.description_raw) return null;
+        if (!data?.description_raw) return null;
         const text = data.description_raw;
         if (text.length <= DESCRIPTION_LIMIT) {
             return <p className="text-gray-300 leading-relaxed text-justify">{text}</p>;
@@ -75,7 +76,7 @@ export default function GamePage() {
                                 <h1 className="text-4xl font-bold mb-2 text-indigo-400">
                                     {data.name}
                                 </h1>
-                                <ToggleFavorite data={data}/>
+                                <ToggleFavorite data={data} />
                             </div>
 
                             <p className="text-gray-300">
@@ -206,7 +207,7 @@ export default function GamePage() {
 
                     {/* Tags */}
                     {data.tags?.length > 0 && (
-                        <div className="flex flex-wrap gap-3 border-t border-indigo-600 pt-6">
+                        <div className="flex flex-wrap gap-3 border-t border-indigo-600 border-b py-6">
                             {data.tags.map((tag) => (
                                 <Link
                                     key={tag.id}
@@ -219,6 +220,9 @@ export default function GamePage() {
                             ))}
                         </div>
                     )}
+
+                    {/* ChatBox: passo data per identificare gioco */}
+                    <ChatBox data={data} />
                 </section>
             )}
         </>
