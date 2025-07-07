@@ -31,7 +31,7 @@ Il progetto include autenticazione, profili utente con **Supabase**, sistema di 
 | 🖼️ [react-lazy-load-image-component](https://www.npmjs.com/package/react-lazy-load-image-component) | Lazy loading immagini |
 | 🎨 [SweetAlert2](https://sweetalert2.github.io/) | Modali e alert personalizzati |
 | ⚙️ [Vite](https://vitejs.dev/) | Dev server e bundler ultra veloce |
-| 🧹 [ESLint](https://eslint.org/) | Linter per mantenere il codice pulito e coerente |
+
 
 ---
 
