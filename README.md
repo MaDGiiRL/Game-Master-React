@@ -51,23 +51,6 @@ npm install
 npm run dev
 ```
 
----
-
-## 📁 Struttura del progetto (semplificata)
-
-```
-game-master-react/
-├── public/
-├── src/
-│   ├── api/             # Integrazione con RAWG API
-│   ├── components/      # Componenti riutilizzabili
-│   ├── pages/           # Pagine principali (Home, Game, Profile)
-│   ├── routes/          # Configurazione delle rotte
-│   ├── services/        # Supabase & helpers
-│   └── App.jsx
-├── tailwind.config.js
-└── vite.config.js
-```
 
 ---
 
