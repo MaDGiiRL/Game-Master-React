@@ -6,6 +6,8 @@ import {
   getFieldError,
 } from '../lib/validationForm';
 import { supabase } from "../supabase/supabase-client";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,8 +15,6 @@ export default function LoginPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
-  const [loginError, setLoginError] = useState("");
-
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -23,7 +23,6 @@ export default function LoginPage() {
   const onSubmit = async (event) => {
     event.preventDefault();
     setFormSubmitted(true);
-    setLoginError(""); 
 
     const { error, data } = ConfirmSchemaLogin.safeParse(formState);
     if (error) {
@@ -32,7 +31,6 @@ export default function LoginPage() {
       return;
     }
 
- 
     const { error: supabaseError } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
@@ -40,11 +38,24 @@ export default function LoginPage() {
 
     if (supabaseError) {
       console.error("Errore login Supabase:", supabaseError.message);
-      setLoginError("Email o password non corretti. 👎🏻");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops!',
+        text: 'Email o password non corretti. 👎🏻',
+        confirmButtonColor: '#d33',
+      });
     } else {
-      alert("Login effettuato con successo! 🎉");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/");
+      Swal.fire({
+        icon: 'success',
+        title: 'Benvenuto!',
+        text: 'Login effettuato con successo 🎉',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1600);
     }
   };
 
@@ -73,7 +84,6 @@ export default function LoginPage() {
       <h2 className="text-2xl font-bold mb-6 text-center">Accedi al tuo account</h2>
 
       <form onSubmit={onSubmit} noValidate className="space-y-5">
-     
         <div>
           <label htmlFor="email" className="block mb-1 font-medium">Email</label>
           <input
@@ -92,7 +102,6 @@ export default function LoginPage() {
           )}
         </div>
 
-      
         <div>
           <label htmlFor="password" className="block mb-1 font-medium">Password</label>
           <input
@@ -110,12 +119,6 @@ export default function LoginPage() {
             <small className="text-red-500">{formErrors.password}</small>
           )}
         </div>
-
-      
-        {loginError && (
-          <div className="text-red-500 font-medium text-sm">{loginError}</div>
-        )}
-
 
         <div>
           <button

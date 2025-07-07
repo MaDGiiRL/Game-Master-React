@@ -9,7 +9,7 @@ export default function ChatBox({ data }) {
     const [message, setMessage] = useState("");
     const messagesEndRef = useRef(null);
 
-    // Carica i messaggi al montaggio
+  
     useEffect(() => {
         const fetchMessages = async () => {
             const { data: fetchedMessages, error } = await supabase
@@ -27,7 +27,7 @@ export default function ChatBox({ data }) {
 
         fetchMessages();
 
-        // Realtime con nuova sintassi
+      
         const channel = supabase
             .channel("chat-messages")
             .on(

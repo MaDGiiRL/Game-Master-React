@@ -4,7 +4,7 @@ import SessionContext from "../context/SessionContext";
 import { useNavigate } from "react-router-dom";
 import FavoritesContext from "../context/FavoritesContext";
 import { FaTrashAlt } from "react-icons/fa";
-
+import Swal from "sweetalert2";
 
 const favoriteGameUI = {
     display: "flex",
@@ -30,15 +30,11 @@ export default function AccountPage() {
     const { favorites, removeFavorite } = useContext(FavoritesContext);
     const [showAllFavorites, setShowAllFavorites] = useState(false);
 
-
-
-    // Recupera dati profilo da tabella "profiles"
     useEffect(() => {
         const getProfile = async () => {
             try {
                 setLoading(true);
                 const { user } = session;
-
                 const { data, error } = await supabase
                     .from("profiles")
                     .select("username, first_name, last_name, avatar_url")
@@ -57,21 +53,18 @@ export default function AccountPage() {
                 }
             } catch (error) {
                 console.error("Errore nel recupero del profilo:", error.message);
-                alert("Errore nel recupero del profilo");
+                Swal.fire({ icon: "error", title: "Errore", text: "Errore nel recupero del profilo" });
             } finally {
                 setLoading(false);
             }
         };
-
         if (session) getProfile();
     }, [session]);
 
-    // Salva modifiche nel DB
     const updateProfile = async (e) => {
         e.preventDefault();
         setLoading(true);
         const { user } = session;
-
         const updates = {
             id: user.id,
             username: formState.username,
@@ -81,10 +74,7 @@ export default function AccountPage() {
             updated_at: new Date(),
         };
 
-        // 1. aggiorna tabella "profiles"
         const { error: profileError } = await supabase.from("profiles").upsert(updates);
-
-        // 2. aggiorna user_metadata in auth.users
         const { error: authError } = await supabase.auth.updateUser({
             data: {
                 username: formState.username,
@@ -96,17 +86,23 @@ export default function AccountPage() {
         setLoading(false);
 
         if (profileError || authError) {
-            alert("Errore durante l'aggiornamento: " + (profileError?.message || authError?.message));
+            Swal.fire({
+                icon: "error",
+                title: "Errore aggiornamento",
+                text: profileError?.message || authError?.message || "Errore sconosciuto",
+            });
         } else {
-            alert("Profilo aggiornato con successo ✅");
+            Swal.fire({
+                icon: "success",
+                title: "Profilo aggiornato",
+                text: "Le modifiche sono state salvate correttamente!",
+            });
         }
     };
 
-    // Carica avatar su Supabase Storage
     const uploadAvatar = async (event) => {
         try {
             setUploading(true);
-
             if (!event.target.files || event.target.files.length === 0) {
                 throw new Error("Devi selezionare un'immagine");
             }
@@ -122,27 +118,35 @@ export default function AccountPage() {
 
             if (uploadError) throw uploadError;
 
-            const { data: publicUrlData } = supabase.storage
-                .from("avatars")
-                .getPublicUrl(filePath);
-
+            const { data: publicUrlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
             const publicUrl = publicUrlData?.publicUrl;
 
             setFormState((prev) => ({ ...prev, avatar_url: publicUrl }));
-            alert("Avatar aggiornato con successo 🧑‍🎤");
+            Swal.fire({
+                icon: "success",
+                title: "Avatar aggiornato",
+                text: "Il tuo nuovo avatar è stato salvato con successo!",
+            });
         } catch (error) {
             console.error(error);
-            alert("Errore durante il caricamento dell'immagine: " + error.message);
+            Swal.fire({
+                icon: "error",
+                title: "Errore caricamento",
+                text: error.message || "Errore durante l'upload dell'immagine",
+            });
         } finally {
             setUploading(false);
         }
     };
 
-    // Cambia la password utente
     const changePassword = async (e) => {
         e.preventDefault();
         if (!password) {
-            alert("Inserisci una nuova password");
+            Swal.fire({
+                icon: "warning",
+                title: "Password mancante",
+                text: "Inserisci una nuova password prima di continuare.",
+            });
             return;
         }
 
@@ -150,15 +154,22 @@ export default function AccountPage() {
 
         if (error) {
             console.error("Errore cambio password:", error.message);
-            alert("Errore nel cambio password: " + error.message);
+            Swal.fire({
+                icon: "error",
+                title: "Errore cambio password",
+                text: error.message || "Errore sconosciuto",
+            });
         } else {
             setPasswordChanged(true);
-            alert("Password aggiornata con successo ✅");
             setPassword("");
+            Swal.fire({
+                icon: "success",
+                title: "Password aggiornata",
+                text: "Hai aggiornato correttamente la password.",
+            });
         }
     };
 
-    // Gestisce i campi del form
     const setField = (field) => (e) =>
         setFormState((prev) => ({ ...prev, [field]: e.target.value }));
 

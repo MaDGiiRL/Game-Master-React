@@ -6,6 +6,8 @@ import {
     getFieldError,
 } from '../lib/validationForm';
 import { supabase } from "../supabase/supabase-client";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -23,36 +25,46 @@ export default function RegisterPage() {
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        console.log("Submit intercettato!");
         setFormSubmitted(true);
+
         const { error, data } = ConfirmSchema.safeParse(formState);
         if (error) {
             const errors = getErrors(error);
             setFormErrors(errors);
             return;
-        } else {
-            console.log("Validazione OK, dati:", data);
-            const { error } = await supabase.auth.signUp({
-                email: data.email,
-                password: data.password,
-                options: {
-                    data: {
-                        first_name: data.firstName,
-                        last_name: data.lastName,
-                        username: data.username,
-                    },
+        }
+
+        const { error: supabaseError } = await supabase.auth.signUp({
+            email: data.email,
+            password: data.password,
+            options: {
+                data: {
+                    first_name: data.firstName,
+                    last_name: data.lastName,
+                    username: data.username,
                 },
+            },
+        });
+
+        if (supabaseError) {
+            console.error("Errore registrazione Supabase:", supabaseError);
+            Swal.fire({
+                icon: 'error',
+                title: 'Errore!',
+                text: 'Registrazione fallita. Controlla i dati o riprova più tardi. 👎🏻',
+                confirmButtonColor: '#d33',
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Registrazione completata!',
+                text: 'Controlla la tua email per confermare il tuo account 📬',
+                confirmButtonColor: '#3085d6',
             });
 
-            if (error) {
-                console.log("Errore registrazione Supabase:", error);
-                alert("Errore durante la registrazione 👎🏻");
-            } else {
-                console.log("Registrazione Supabase completata");
-                alert("Registrazione completata 👍🏻");
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+            setTimeout(() => {
                 navigate("/");
-            }
+            }, 1600);
         }
     };
 
@@ -93,8 +105,7 @@ export default function RegisterPage() {
                         onBlur={onBlur("email")}
                         aria-invalid={isInvalid("email")}
                         required
-                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.email ? "border-red-500" : "border-gray-300"
-                            }`}
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.email ? "border-red-500" : "border-gray-300"}`}
                     />
                     {formErrors.email && (
                         <small className="text-red-500">{formErrors.email}</small>
@@ -113,8 +124,7 @@ export default function RegisterPage() {
                         onBlur={onBlur("firstName")}
                         aria-invalid={isInvalid("firstName")}
                         required
-                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.firstName ? "border-red-500" : "border-gray-300"
-                            }`}
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.firstName ? "border-red-500" : "border-gray-300"}`}
                     />
                     {formErrors.firstName && (
                         <small className="text-red-500">{formErrors.firstName}</small>
@@ -133,8 +143,7 @@ export default function RegisterPage() {
                         onBlur={onBlur("lastName")}
                         aria-invalid={isInvalid("lastName")}
                         required
-                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.lastName ? "border-red-500" : "border-gray-300"
-                            }`}
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.lastName ? "border-red-500" : "border-gray-300"}`}
                     />
                     {formErrors.lastName && (
                         <small className="text-red-500">{formErrors.lastName}</small>
@@ -153,8 +162,7 @@ export default function RegisterPage() {
                         onBlur={onBlur("username")}
                         aria-invalid={isInvalid("username")}
                         required
-                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.username ? "border-red-500" : "border-gray-300"
-                            }`}
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.username ? "border-red-500" : "border-gray-300"}`}
                     />
                     {formErrors.username && (
                         <small className="text-red-500">{formErrors.username}</small>
@@ -173,8 +181,7 @@ export default function RegisterPage() {
                         onBlur={onBlur("password")}
                         aria-invalid={isInvalid("password")}
                         required
-                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.password ? "border-red-500" : "border-gray-300"
-                            }`}
+                        className={`w-full px-4 py-2 rounded-lg border transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 ${formErrors.password ? "border-red-500" : "border-gray-300"}`}
                     />
                     {formErrors.password && (
                         <small className="text-red-500">{formErrors.password}</small>
@@ -192,6 +199,5 @@ export default function RegisterPage() {
                 </div>
             </form>
         </div>
-
     );
 }

@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/supabase-client";
 import logo from "../public/logo.png";
-import SessionContext from "../context/SessionContext"
+import SessionContext from "../context/SessionContext";
+import Swal from "sweetalert2";
 
 export default function Header() {
     const [user, setUser] = useState(null);
@@ -10,7 +11,6 @@ export default function Header() {
     const { session } = useContext(SessionContext);
 
     useEffect(() => {
-
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user);
@@ -22,7 +22,6 @@ export default function Header() {
             setUser(session?.user || null);
         });
 
-
         return () => {
             listener.subscription.unsubscribe();
         };
@@ -31,6 +30,13 @@ export default function Header() {
     const handleLogout = async () => {
         await supabase.auth.signOut();
         setUser(null);
+        Swal.fire({
+            icon: 'success',
+            title: 'Logout effettuato',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
         navigate("/");
     };
 
