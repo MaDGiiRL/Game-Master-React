@@ -41,7 +41,7 @@ export default function Header() {
     };
 
     return (
-        <header style={{ zIndex: 0 }} className="fixed top-0 w-full z-50 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 shadow-xl" style={{ marginBottom: 50 }}>
+        <header className="top-0 w-full z-50 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 shadow-xl" >
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 {/* Logo con effetto hover */}
                 <Link

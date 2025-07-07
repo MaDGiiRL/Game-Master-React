@@ -89,7 +89,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-8 rounded-2xl shadow-md" style={{ marginTop: 100 }}>
+        <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-8 rounded-2xl shadow-md" style={{ marginTop: 300 }}>
             <h2 className="text-2xl font-bold mb-6 text-center">Crea il tuo account</h2>
             <form onSubmit={onSubmit} noValidate className="space-y-5">
 

@@ -31,7 +31,7 @@ export default function Sidebar() {
             </div>
 
             {/* Sidebar */}
-            <aside style={{ zIndex: 9999 }}
+            <aside
                 id="sidebar"
                 className={`
           fixed top-0 left-0 h-full bg-gray-900 text-white p-6 rounded-r-xl shadow-xl
