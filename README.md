@@ -65,6 +65,11 @@ VITE_SUPABASE_KEY=https://your-project.supabase.co
 
 ---
 
+
+## 🔐 Preview del sito
+
+Game Master è online! Corri a visionarlo e lasciarmi un feedback [https://game-master-react-q1gb.vercel.app](https://game-master-react-q1gb.vercel.app)
+
 ## 👩‍💻 Autrice
 
 > Developed with ❤️ by **Sofia Vidotto**  
