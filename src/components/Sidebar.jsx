@@ -1,6 +1,5 @@
 import { useState } from "react";
 import GenresDropdown from "./GenresDropdown";
-import Searchbar from "./Searchbar";
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +42,6 @@ export default function Sidebar() {
         `}
             >
                 <GenresDropdown />
-                <Searchbar />
             </aside>
 
             {/* Overlay cliccabile solo su mobile quando sidebar aperta */}
