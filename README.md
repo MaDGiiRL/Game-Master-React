@@ -61,6 +61,7 @@ Per utilizzare l'API RAWG, crea un account gratuito su [https://rawg.io/apidocs]
 ```env
 VITE_SUPABASE_URL==la_tua_api_key
 VITE_SUPABASE_KEY=https://your-project.supabase.co
+```
 
 ---
 
