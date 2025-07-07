@@ -12,26 +12,29 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import SessionProvider from "./context/SessionProvider";
 import AccountPage from "./pages/AccountPage";
+import FavoritesProvider from "./context/FavoritesProvider";
 
 
 function App() {
   return (
     <SessionProvider>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/games/:genre" element={<GenrePage />} />
-          <Route path="/platforms/:platform" element={<PlatformPage />} />
-          <Route path="/top-rated/:genre" element={<TopRatedPage />} />
-          <Route path="/order/:sort" element={<OrderPage />} />
-          <Route path="/games/:slug/:id" element={<GamePage />} />
-          <Route path="/tags/:tag" element={<TagPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/account" element={<AccountPage />} />
-        </Route>
-      </Routes>
+      <FavoritesProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/games/:genre" element={<GenrePage />} />
+            <Route path="/platforms/:platform" element={<PlatformPage />} />
+            <Route path="/top-rated/:genre" element={<TopRatedPage />} />
+            <Route path="/order/:sort" element={<OrderPage />} />
+            <Route path="/games/:slug/:id" element={<GamePage />} />
+            <Route path="/tags/:tag" element={<TagPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/account" element={<AccountPage />} />
+          </Route>
+        </Routes>
+      </FavoritesProvider>
     </SessionProvider>
   )
 }

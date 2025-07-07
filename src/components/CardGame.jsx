@@ -1,5 +1,6 @@
 import LazyLoadGameImage from "./LazyLoadGameImage";
 import { Link } from 'react-router-dom';
+import ToggleFavorite from "./ToggleFavorite";
 
 export default function CardGame({ game }) {
     const { name, background_image, released, genres, rating } = game;
@@ -10,6 +11,11 @@ export default function CardGame({ game }) {
             {/* Immagine */}
             <div className="relative">
                 <LazyLoadGameImage image={background_image} />
+
+                {/* Toggle cuore */}
+                <div className="absolute top-2 right-2 z-10">
+                    <ToggleFavorite data={game} />
+                </div>
 
                 {/* Overlay */}
                 <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">

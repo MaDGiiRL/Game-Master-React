@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetchSolution from "../hook/useFetchSolution";
+import ToggleFavorite from "../components/ToggleFavorite"; // ⚠️ adatta il path se necessario
 
 export default function GamePage() {
     const { id } = useParams();
@@ -18,7 +19,6 @@ export default function GamePage() {
             `https://api.rawg.io/api/games/${id}?key=9269195f491e44539d7a2d10ce87ab15`
         );
     }, [id, updateUrl]);
-
 
     const [showFull, setShowFull] = useState(false);
     const DESCRIPTION_LIMIT = 800;
@@ -71,9 +71,13 @@ export default function GamePage() {
                         </div>
 
                         <div className="flex flex-col justify-center gap-6 md:w-1/2">
-                            <h1 className="text-4xl font-bold mb-2 text-indigo-400">
-                                {data.name}
-                            </h1>
+                            <div className="flex items-center gap-4">
+                                <h1 className="text-4xl font-bold mb-2 text-indigo-400">
+                                    {data.name}
+                                </h1>
+                                <ToggleFavorite data={data}/>
+                            </div>
+
                             <p className="text-gray-300">
                                 Release date:{" "}
                                 <span className="font-semibold">{data.released}</span>
@@ -133,7 +137,9 @@ export default function GamePage() {
                         <div className="md:w-1/3 flex flex-col gap-8">
                             {data.platforms?.length > 0 && (
                                 <div>
-                                    <h2 className="text-2xl font-semibold text-indigo-400 mb-2">Platforms</h2>
+                                    <h2 className="text-2xl font-semibold text-indigo-400 mb-2">
+                                        Platforms
+                                    </h2>
                                     <ul className="list-disc list-inside text-gray-300 text-l max-h-55 overflow-auto">
                                         {data.platforms.map((p, i) => (
                                             <li key={i}>{p.platform.name}</li>

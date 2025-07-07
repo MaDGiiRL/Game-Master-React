@@ -2,6 +2,15 @@ import { useState, useEffect, useContext } from "react";
 import { supabase } from "../supabase/supabase-client";
 import SessionContext from "../context/SessionContext";
 import { useNavigate } from "react-router-dom";
+import FavoritesContext from "../context/FavoritesContext";
+import { FaTrashAlt } from "react-icons/fa";
+
+
+const favoriteGameUI = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+};
 
 export default function AccountPage() {
     const { session } = useContext(SessionContext);
@@ -17,6 +26,11 @@ export default function AccountPage() {
     const [passwordChanged, setPasswordChanged] = useState(false);
 
     const navigate = useNavigate();
+
+    const { favorites, removeFavorite } = useContext(FavoritesContext);
+    const [showAllFavorites, setShowAllFavorites] = useState(false);
+
+
 
     // Recupera dati profilo da tabella "profiles"
     useEffect(() => {
@@ -149,7 +163,7 @@ export default function AccountPage() {
         setFormState((prev) => ({ ...prev, [field]: e.target.value }));
 
     return (
-        <div className="max-w-lg mx-auto mt-24 bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-md text-gray-900 dark:text-white">
+        <div className="max-w-xl mx-auto mt-24 bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-md text-gray-900 dark:text-white">
             <h2 className="text-2xl font-bold mb-6 text-center">Modifica Profilo</h2>
             <form onSubmit={updateProfile} className="space-y-5">
                 <div className="flex flex-col items-center gap-3">
@@ -257,7 +271,61 @@ export default function AccountPage() {
                 {passwordChanged && (
                     <p className="text-sm text-green-500">Password aggiornata!</p>
                 )}
+
             </form>
-        </div>
+
+
+            <div className="mt-12">
+                <h2 className="text-xl font-bold mb-4">
+                    Hey {session?.user.user_metadata.first_name}, i tuoi giochi preferiti 🎮
+                </h2>
+
+                {favorites.length === 0 ? (
+                    <p className="text-sm text-gray-500">Non ci sono favoriti al momento...</p>
+                ) : (
+                    <>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            {Array.from(
+                                new Map(favorites.map((game) => [game.game_id, game])).values()
+                            )
+                                .slice(0, showAllFavorites ? undefined : 8)
+                                .map((game) => (
+                                    <div
+                                        key={game.game_id}
+                                        className="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg relative shadow hover:shadow-md transition"
+                                    >
+                                        <img
+                                            src={game.game_image}
+                                            alt={game.game_name}
+                                            className="w-full h-28 object-cover rounded-md mb-1"
+                                        />
+                                        <p className="text-xs font-semibold truncate mb-1">{game.game_name}</p>
+                                        <button
+                                            onClick={() => removeFavorite(game.game_id)}
+                                            className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+                                            title="Rimuovi"
+                                        >
+                                            <FaTrashAlt />
+                                        </button>
+                                    </div>
+                                ))}
+                        </div>
+
+                        {/* Bottone Show More / Show Less */}
+                        {favorites.length > 8 && (
+                            <div className="flex justify-center mt-4">
+                                <button
+                                    onClick={() => setShowAllFavorites((prev) => !prev)}
+                                    className="text-sm text-indigo-600 hover:underline"
+                                >
+                                    {showAllFavorites ? "Mostra meno" : "Mostra tutti"}
+                                </button>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+
+        </div >
     );
 }
