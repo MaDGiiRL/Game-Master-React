@@ -41,7 +41,7 @@ Assicurati di avere **Node.js** installato. Poi:
 
 ```bash
 # Clona il repository
-git clone https://github.com/tuo-utente/game-master-react.git
+git clone https://github.com/MaDGiiRL/Game-Master-React
 cd game-master-react
 
 # Installa le dipendenze
