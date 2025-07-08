@@ -34,7 +34,7 @@ export default function Sidebar() {
                 id="sidebar"
                 className={`
           fixed top-0 left-0 h-full bg-gray-900 text-white p-6 rounded-r-xl shadow-xl
-          w-64
+          w-74
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           md:relative md:translate-x-0 md:rounded-none md:shadow-none

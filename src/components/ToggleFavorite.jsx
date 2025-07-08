@@ -3,7 +3,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import FavoritesContext from "../context/FavoritesContext";
 
 export default function ToggleFavorite({ data }) {
-    const { favorites, addFavorites, removeFavorites } = useContext(FavoritesContext);
+    const { favorites, addFavorites, removeFavorite } = useContext(FavoritesContext);
     const [isFav, setIsFav] = useState(false);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ export default function ToggleFavorite({ data }) {
 
     const toggleFavorite = () => {
         if (isFav) {
-            removeFavorites(data);
+            removeFavorite(data.id);
         } else {
             addFavorites(data);
         }
