@@ -83,6 +83,7 @@ export default function Header() {
         navigate("/");
     };
 
+
     return (
         <header className="top-0 w-full z-50 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 shadow-xl">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -95,6 +96,7 @@ export default function Header() {
                     <h1 className="text-3xl font-extrabold tracking-wide text-white select-none">
                         Game <span className="text-purple-400 drop-shadow-md">Master</span>
                     </h1>
+
                 </Link>
 
                 <nav className="flex space-x-6 items-center text-sm font-semibold">
@@ -156,7 +158,9 @@ export default function Header() {
                             </Link>
                         </>
                     )}
+
                 </nav>
+
             </div>
 
             <div className="h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-600 animate-gradient-x" />

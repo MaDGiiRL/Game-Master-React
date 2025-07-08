@@ -7,6 +7,7 @@ import OrderPage from "./pages/OrderPage";
 import Layout from "../src/layout/Layout";
 import GamePage from "./pages/GamePage";
 import TagPage from "./pages/TagPage";
+import StoresPage from './pages/StoresPage';
 import SearchPage from "./pages/SearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/platforms/:platform" element={<PlatformPage />} />
             <Route path="/top-rated/:genre" element={<TopRatedPage />} />
             <Route path="/order/:sort" element={<OrderPage />} />
+            <Route path="/stores" element={<StoresPage />} />
             <Route path="/games/:slug/:id" element={<GamePage />} />
             <Route path="/tags/:tag" element={<TagPage />} />
             <Route path="/search" element={<SearchPage />} />

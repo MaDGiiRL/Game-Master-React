@@ -90,7 +90,7 @@ export default function GamePage() {
                             {data.genres?.length > 0 && (
                                 <div>
                                     <h2 className="text-xl font-semibold text-indigo-400 mb-1">
-                                        Genres
+                                        Generi
                                     </h2>
                                     <div className="flex flex-wrap gap-2 pt-2">
                                         {data.genres.slice(0, 4).map((genre) => (

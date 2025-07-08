@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'; 
+
 import { useState } from "react";
 import GenresDropdown from "./GenresDropdown";
 import SearchBar from './SearchBar';
+
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +45,17 @@ export default function Sidebar() {
         `}
             >
                 <GenresDropdown />
+
+                {/* Bottone link per Stores */}
+                <div className="mb-10">
+                    <Link
+                        to="/stores"
+                        className="block bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2 rounded-md font-semibold transition"
+                    >
+                        🛒 Vedi tutti gli Stores
+                    </Link>
+                </div>
+
                 <SearchBar />
             </aside>
 
