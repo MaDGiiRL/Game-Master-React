@@ -5,12 +5,7 @@ import { useNavigate } from "react-router-dom";
 import FavoritesContext from "../context/FavoritesContext";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
-
-const favoriteGameUI = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-};
+import Avatar from "../components/Avatar";
 
 export default function AccountPage() {
     const { session } = useContext(SessionContext);
@@ -26,7 +21,6 @@ export default function AccountPage() {
     const [passwordChanged, setPasswordChanged] = useState(false);
 
     const navigate = useNavigate();
-
     const { favorites, removeFavorite } = useContext(FavoritesContext);
     const [showAllFavorites, setShowAllFavorites] = useState(false);
 
@@ -100,45 +94,6 @@ export default function AccountPage() {
         }
     };
 
-    const uploadAvatar = async (event) => {
-        try {
-            setUploading(true);
-            if (!event.target.files || event.target.files.length === 0) {
-                throw new Error("Devi selezionare un'immagine");
-            }
-
-            const file = event.target.files[0];
-            const fileExt = file.name.split(".").pop();
-            const fileName = `${session.user.id}-${Date.now()}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from("avatars")
-                .upload(filePath, file, { upsert: true });
-
-            if (uploadError) throw uploadError;
-
-            const { data: publicUrlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
-            const publicUrl = publicUrlData?.publicUrl;
-
-            setFormState((prev) => ({ ...prev, avatar_url: publicUrl }));
-            Swal.fire({
-                icon: "success",
-                title: "Avatar aggiornato",
-                text: "Il tuo nuovo avatar è stato salvato con successo!",
-            });
-        } catch (error) {
-            console.error(error);
-            Swal.fire({
-                icon: "error",
-                title: "Errore caricamento",
-                text: error.message || "Errore durante l'upload dell'immagine",
-            });
-        } finally {
-            setUploading(false);
-        }
-    };
-
     const changePassword = async (e) => {
         e.preventDefault();
         if (!password) {
@@ -173,29 +128,52 @@ export default function AccountPage() {
     const setField = (field) => (e) =>
         setFormState((prev) => ({ ...prev, [field]: e.target.value }));
 
+    const handleAvatarUpload = async (event) => {
+        try {
+            setUploading(true);
+            if (!event.target.files || event.target.files.length === 0) {
+                throw new Error("Devi selezionare un'immagine");
+            }
+
+            const file = event.target.files[0];
+            const fileExt = file.name.split(".").pop();
+            const fileName = `${session.user.id}-${Date.now()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from("avatars")
+                .upload(filePath, file, { upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            setFormState((prev) => ({ ...prev, avatar_url: filePath }));
+
+            Swal.fire({
+                icon: "success",
+                title: "Avatar aggiornato",
+                text: "Il tuo nuovo avatar è stato salvato con successo!",
+            });
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: "error",
+                title: "Errore caricamento",
+                text: error.message || "Errore durante l'upload dell'immagine",
+            });
+        } finally {
+            setUploading(false);
+        }
+    };
+
     return (
         <div className="max-w-xl mx-auto mt-24 bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-md text-gray-900 dark:text-white">
             <h2 className="text-2xl font-bold mb-6 text-center">Modifica Profilo</h2>
             <form onSubmit={updateProfile} className="space-y-5">
                 <div className="flex flex-col items-center gap-3">
-                    {formState.avatar_url ? (
-                        <img
-                            src={formState.avatar_url}
-                            alt="Avatar"
-                            className="w-24 h-24 rounded-full object-cover border"
-                        />
-                    ) : (
-                        <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-                            Nessun avatar
-                        </div>
-                    )}
-                    <label className="text-sm font-medium">Cambia Avatar</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={uploadAvatar}
-                        disabled={uploading}
-                        className="text-sm"
+                    <Avatar
+                        url={formState.avatar_url}
+                        size={100}
+                        onUpload={(event, path) => setFormState((prev) => ({ ...prev, avatar_url: path }))}
                     />
                 </div>
 
@@ -257,10 +235,9 @@ export default function AccountPage() {
                 </div>
             </form>
 
-            {/* Sezione cambio password */}
+            {/* Cambio password */}
             <form onSubmit={changePassword} className="mt-8 border-t border-gray-300 dark:border-gray-700 pt-6 space-y-4">
                 <h3 className="text-lg font-semibold mb-2">Cambia Password</h3>
-
                 <div>
                     <label htmlFor="password" className="block mb-1 font-medium">Nuova Password</label>
                     <input
@@ -271,21 +248,18 @@ export default function AccountPage() {
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
                     />
                 </div>
-
                 <button
                     type="submit"
                     className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
                 >
                     Cambia Password
                 </button>
-
                 {passwordChanged && (
                     <p className="text-sm text-green-500">Password aggiornata!</p>
                 )}
-
             </form>
 
-
+            {/* Preferiti */}
             <div className="mt-12">
                 <h2 className="text-xl font-bold mb-4">
                     Hey {session?.user.user_metadata.first_name}, i tuoi giochi preferiti 🎮
@@ -303,7 +277,8 @@ export default function AccountPage() {
                                 .map((game) => (
                                     <div
                                         key={game.game_id}
-                                        className="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg relative shadow hover:shadow-md transition"
+                                        onClick={() => navigate(`/games/${game.slug}/${game.game_id}`)}
+                                        className="cursor-pointer bg-gray-100 dark:bg-gray-800 p-2 rounded-lg relative shadow hover:shadow-md transition"
                                     >
                                         <img
                                             src={game.game_image}
@@ -312,7 +287,10 @@ export default function AccountPage() {
                                         />
                                         <p className="text-xs font-semibold truncate mb-1">{game.game_name}</p>
                                         <button
-                                            onClick={() => removeFavorite(game.game_id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // previene la navigazione quando si clicca su rimuovi
+                                                removeFavorite(game.game_id);
+                                            }}
                                             className="absolute top-2 right-2 text-red-600 hover:text-red-800"
                                             title="Rimuovi"
                                         >
@@ -320,9 +298,9 @@ export default function AccountPage() {
                                         </button>
                                     </div>
                                 ))}
+
                         </div>
 
-                        {/* Bottone Show More / Show Less */}
                         {favorites.length > 8 && (
                             <div className="flex justify-center mt-4">
                                 <button
@@ -336,7 +314,6 @@ export default function AccountPage() {
                     </>
                 )}
             </div>
-
-        </div >
+        </div>
     );
 }

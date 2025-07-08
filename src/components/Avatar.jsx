@@ -8,11 +8,30 @@ export default function Avatar({ url, size = 150, onUpload }) {
 
   useEffect(() => {
     if (url) {
-      downloadImage(url);
+      // Se url è un URL completo, estrai solo il filename
+      const path = extractPathFromUrl(url);
+      downloadImage(path);
     } else {
       setAvatarUrl(null);
     }
   }, [url]);
+
+  // Funzione per estrarre il percorso relativo dal full URL
+  const extractPathFromUrl = (url) => {
+    try {
+      // Se url è un URL completo, estrae solo la parte finale dopo /avatars/
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname; // es: /storage/v1/object/public/avatars/filename.jpeg
+      const parts = pathname.split('/avatars/');
+      if (parts.length > 1) {
+        return parts[1]; // filename.jpeg
+      }
+      return url; // se non è URL completo, ritorna quello che c'è
+    } catch {
+      // Se non è un URL valido, ritorna il valore così com'è
+      return url;
+    }
+  };
 
   const downloadImage = async (path) => {
     try {
@@ -25,7 +44,6 @@ export default function Avatar({ url, size = 150, onUpload }) {
       console.error('Errore durante il download dell\'immagine:', error.message);
       setAvatarUrl(null);
 
-      
       Swal.fire({
         icon: 'error',
         title: 'Errore',
@@ -56,7 +74,6 @@ export default function Avatar({ url, size = 150, onUpload }) {
 
       onUpload(event, filePath);
 
-
       Swal.fire({
         icon: 'success',
         title: 'Upload completato',
@@ -65,7 +82,6 @@ export default function Avatar({ url, size = 150, onUpload }) {
         showConfirmButton: false,
       });
     } catch (error) {
-  
       Swal.fire({
         icon: 'error',
         title: 'Errore',
@@ -88,34 +104,30 @@ export default function Avatar({ url, size = 150, onUpload }) {
             width: size,
             borderRadius: '50%',
             objectFit: 'cover',
-            boxShadow: '3px 3px 8px rgba(0,0,0,0.5)',
-            marginBottom: 8,
           }}
         />
       ) : (
         <div
-          className="avatar-placeholder"
           style={{
             height: size,
             width: size,
             borderRadius: '50%',
             backgroundColor: '#ccc',
-            display: 'inline-block',
-            marginBottom: 8,
           }}
         />
       )}
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={uploadAvatar}
-        disabled={uploading}
-        aria-label="Carica immagine avatar"
-        style={{ cursor: uploading ? 'not-allowed' : 'pointer' }}
-      />
-
-      {uploading && <p style={{ fontSize: 14, color: '#555' }}>Caricamento in corso...</p>}
+      <div style={{ marginTop: 10 }}>
+        <label className="btn btn-primary" style={{ cursor: uploading ? 'not-allowed' : 'pointer' }}>
+          {uploading ? 'Caricamento...' : 'Carica nuova immagine'}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+            style={{ display: 'none' }}
+          />
+        </label>
+      </div>
     </div>
   );
 }
