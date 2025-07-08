@@ -1,29 +1,34 @@
-import LazyLoadGameImage from "./LazyLoadGameImage";
+import { useContext } from "react";
 import { Link } from 'react-router-dom';
+import LazyLoadGameImage from "./LazyLoadGameImage";
 import ToggleFavorite from "./ToggleFavorite";
+import SessionContext from "../context/SessionContext";
 
 export default function CardGame({ game }) {
     const { name, background_image, released, genres, rating } = game;
+    const { session } = useContext(SessionContext); 
 
     return (
         <article className="relative h-[350px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
 
-            {/* Immagine */}
+            {/* Immagine con link */}
             <div className="relative">
-                <LazyLoadGameImage image={background_image} />
+                <Link to={`/games/${game.slug}/${game.id}`}>
+                    <LazyLoadGameImage image={background_image} />
 
-                {/* Toggle cuore */}
-                <div className="absolute top-2 right-2 z-10">
-                    <ToggleFavorite data={game} />
-                </div>
-
-                {/* Overlay */}
-                <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <Link to={`/games/${game.slug}/${game.id}`}>
+                    {/* Overlay titolo + data */}
+                    <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
                         <h2 className="text-white text-lg font-bold truncate hover:underline">{name}</h2>
-                    </Link>
-                    <p className="text-gray-300 text-sm">{released}</p>
-                </div>
+                        <p className="text-gray-300 text-sm">{released}</p>
+                    </div>
+                </Link>
+
+                {/* Toggle cuore visibile solo se loggato */}
+                {session && (
+                    <div className="absolute top-2 right-2 z-10">
+                        <ToggleFavorite data={game} />
+                    </div>
+                )}
             </div>
 
             {/* Corpo card */}
