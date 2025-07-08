@@ -21,10 +21,10 @@ export default function Avatar({ url, size = 150, onUpload }) {
     try {
       // Se url è un URL completo, estrae solo la parte finale dopo /avatars/
       const urlObj = new URL(url);
-      const pathname = urlObj.pathname; // es: /storage/v1/object/public/avatars/filename.jpeg
+      const pathname = urlObj.pathname; 
       const parts = pathname.split('/avatars/');
       if (parts.length > 1) {
-        return parts[1]; // filename.jpeg
+        return parts[1]; 
       }
       return url; // se non è URL completo, ritorna quello che c'è
     } catch {

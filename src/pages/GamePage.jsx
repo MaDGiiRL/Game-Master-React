@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetchSolution from "../hook/useFetchSolution";
 import ToggleFavorite from "../components/ToggleFavorite";
 import ChatBox from "../components/ChatBox";
+import SessionContext from "../context/SessionContext";
 
 export default function GamePage() {
     const { id } = useParams();
+    const { session } = useContext(SessionContext);
+
     const {
         data,
         error,
@@ -221,8 +224,31 @@ export default function GamePage() {
                         </div>
                     )}
 
-                    {/* ChatBox: passo data per identificare gioco */}
-                    <ChatBox data={data} />
+                    {/* ChatBox o messaggio per registrarsi */}
+                    {session ? (
+                        <ChatBox data={data} />
+                    ) : (
+                        <div className="text-center mt-10 p-6 bg-gray-800 rounded-lg text-indigo-400">
+                            <p>
+                                Per chattare in live su questo gioco, <strong>registrati</strong> o effettua il login.
+                            </p>
+                            <div className="mt-3 flex justify-center gap-4">
+                                <Link
+                                    to="/register"
+                                    className="text-white px-5 py-2 bg-indigo-600 hover:bg-indigo-500 rounded transition font-semibold"
+                                >
+                                    Registrati
+                                </Link>
+                                <Link
+                                    to="/login"
+                                    className="text-indigo-600 px-5 py-2 bg-white hover:bg-gray-200 rounded transition font-semibold"
+                                >
+                                    Login
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+
                 </section>
             )}
         </>
