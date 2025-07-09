@@ -12,7 +12,7 @@ export default function Layout() {
                 <Sidebar />
             </aside>
             <div className="pt-1 md:pl-64 min-h-screen flex flex-col md:ml-6">
-                <main className="flex-grow px-6 pb-16 overflow-y-auto">
+                <main className="flex-grow px-6 pb-16 overflow-y-auto"  style={{marginTop: 50}}>
                     <Outlet />
                 </main>
                 <Footer />
