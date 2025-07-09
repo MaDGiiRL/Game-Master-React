@@ -86,6 +86,7 @@ export default function Sidebar() {
                 <div className="flex-shrink-0 px-8 py-6 flex flex-row items-center justify-between">
                     <Link
                         to="/"
+                        onClick={() => setOpen(false)}
                         className="flex items-center space-x-3 transform transition-transform duration-300 hover:scale-110"
                         aria-label="Torna alla home"
                     >
@@ -117,9 +118,7 @@ export default function Sidebar() {
                     </button>
                 </div>
 
-                {/* Nav */}
                 <nav className={`${open ? 'block' : 'hidden'} flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto`}>
-
                     {user ? (
                         <div className="relative mt-4">
                             <button
@@ -151,12 +150,19 @@ export default function Sidebar() {
                                     <div className="px-2 py-2 bg-white rounded-md shadow dark:bg-gray-800">
                                         <Link
                                             to="/account"
+                                            onClick={() => {
+                                                setDropdownOpen(false);
+                                                setOpen(false);
+                                            }}
                                             className="block px-4 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition"
                                         >
                                             Profilo
                                         </Link>
                                         <button
-                                            onClick={handleLogout}
+                                            onClick={async () => {
+                                                await handleLogout();
+                                                setOpen(false);
+                                            }}
                                             className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100 dark:hover:bg-red-600 hover:text-white rounded-md transition"
                                         >
                                             Logout
@@ -170,12 +176,14 @@ export default function Sidebar() {
                             <div className="flex gap-4 justify-center">
                                 <Link
                                     to="/login"
+                                    onClick={() => setOpen(false)}
                                     className="px-6 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-transform transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-400"
                                 >
                                     Login
                                 </Link>
                                 <Link
                                     to="/register"
+                                    onClick={() => setOpen(false)}
                                     className="px-6 py-2 rounded-full border-2 border-indigo-500 text-white hover:bg-indigo-500 hover:text-white transition-colors shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-400"
                                 >
                                     Registrati
@@ -194,6 +202,7 @@ export default function Sidebar() {
 
                     <Link
                         to="/stores"
+                        onClick={() => setOpen(false)}
                         className="block bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2 mt-4 rounded-md font-semibold transition"
                     >
                         🛒 Vedi tutti gli Stores
