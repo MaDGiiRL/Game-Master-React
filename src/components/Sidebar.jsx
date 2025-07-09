@@ -82,8 +82,8 @@ export default function Sidebar() {
 
     return (
         <div className="md:flex flex-col md:flex-row md:min-h-screen w-full shadow-lg">
-            <div className="flex flex-col w-full md:w-72 text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-800 flex-shrink-0">
-                <div className="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
+            <div className="flex flex-col w-full md:w-72 text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-800 flex-shrink-0 pt-1">
+                <div className="flex-shrink-0 px-8 py-6 flex flex-row items-center justify-between">
                     <Link
                         to="/"
                         className="flex items-center space-x-3 transform transition-transform duration-300 hover:scale-110"
@@ -166,7 +166,7 @@ export default function Sidebar() {
                             )}
                         </div>
                     ) : (
-                        <div className="mb-4 flex flex-col items-center gap-2 pt-5 min-h-[80px]">
+                        <div className="mb-1 flex flex-col items-center gap-2 pt-5 min-h-[80px]">
                             <div className="flex gap-4 justify-center">
                                 <Link
                                     to="/login"
@@ -184,12 +184,12 @@ export default function Sidebar() {
                         </div>
                     )}
 
-                    <div className="mt-10">
-                        <SearchBar />
-                    </div>
-
                     <div>
                         <GenresDropdown />
+                    </div>
+
+                    <div className="mt-10">
+                        <SearchBar />
                     </div>
 
                     <Link
