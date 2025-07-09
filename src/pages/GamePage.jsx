@@ -8,6 +8,9 @@ import SessionContext from "../context/SessionContext";
 export default function GamePage() {
     const { id } = useParams();
     const { session } = useContext(SessionContext);
+    const [screenshots, setScreenshots] = useState([]);
+    const [stores, setStores] = useState([]);
+    const [showAllTags, setShowAllTags] = useState(false);
 
     const {
         data,
@@ -26,6 +29,52 @@ export default function GamePage() {
 
     const [showFull, setShowFull] = useState(false);
     const DESCRIPTION_LIMIT = 800;
+
+    useEffect(() => {
+        // 🔄 Aggiorna il gioco principale
+        updateUrl(
+            `https://api.rawg.io/api/games/${id}?key=9269195f491e44539d7a2d10ce87ab15`
+        );
+
+        // 🖼️ Fetch degli screenshot
+        const fetchScreenshots = async () => {
+            try {
+                const response = await fetch(
+                    `https://api.rawg.io/api/games/${id}/screenshots?key=9269195f491e44539d7a2d10ce87ab15`
+                );
+                if (!response.ok) throw new Error("Errore nella richiesta degli screenshot");
+                const json = await response.json();
+                setScreenshots(json.results || []);
+            } catch (error) {
+                console.error("❌ Errore nel fetch degli screenshot:", error.message);
+            }
+        };
+
+        // 🛒 Fetch degli store
+        const fetchStores = async () => {
+            try {
+                const response = await fetch(
+                    `https://api.rawg.io/api/games/${id}/stores?key=9269195f491e44539d7a2d10ce87ab15`
+                );
+                if (!response.ok) throw new Error("Errore nella richiesta degli store");
+                const json = await response.json();
+
+                // Ordina per nome se disponibile
+                const sortedStores = (json.results || []).sort((a, b) => {
+                    if (!a.store?.name || !b.store?.name) return 0;
+                    return a.store.name.localeCompare(b.store.name);
+                });
+
+                setStores(sortedStores);
+            } catch (error) {
+                console.error("❌ Errore nel fetch degli store:", error.message);
+            }
+        };
+
+        fetchScreenshots();
+        fetchStores();
+    }, [id, updateUrl]);
+
 
     const renderDescription = () => {
         if (!data?.description_raw) return null;
@@ -128,6 +177,28 @@ export default function GamePage() {
                             )}
                         </div>
                     </div>
+                    {/* Screenshot Gallery */}
+                    {screenshots.length > 0 && (
+                        <div className="mb-16">
+                            <h2 className="text-2xl font-semibold text-indigo-400 mb-4">
+                                Screenshots
+                            </h2>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                                {screenshots.map((shot, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-full h-38 overflow-hidden rounded-xl shadow-md"
+                                    >
+                                        <img
+                                            src={shot.image}
+                                            alt={`Screenshot ${index + 1}`}
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     {/* Descrizione + info secondarie */}
                     <div className="flex flex-col md:flex-row gap-10 mb-12">
@@ -210,18 +281,75 @@ export default function GamePage() {
 
                     {/* Tags */}
                     {data.tags?.length > 0 && (
-                        <div className="flex flex-wrap gap-3 border-t border-indigo-600 border-b py-6">
-                            {data.tags.map((tag) => (
-                                <Link
-                                    key={tag.id}
-                                    to={`/tags/${tag.slug}`}
-                                    className="bg-indigo-600 px-4 py-2 rounded-full text-sm hover:bg-indigo-700 transition"
-                                    title={`Vai alla pagina del tag ${tag.name}`}
+                        <div className="flex flex-col gap-3 border-t border-indigo-600 border-b py-6">
+                            <div className="flex flex-wrap gap-3">
+                                {(showAllTags ? data.tags : data.tags.slice(0, 15)).map((tag) => (
+                                    <Link
+                                        key={tag.id}
+                                        to={`/tags/${tag.slug}`}
+                                        className="bg-indigo-600 px-4 py-2 rounded-full text-sm hover:bg-indigo-700 transition"
+                                        title={`Vai alla pagina del tag ${tag.name}`}
+                                    >
+                                        {tag.name}
+                                    </Link>
+                                ))}
+                            </div>
+
+                            {/* Pulsante toggle */}
+                            {data.tags.length > 10 && (
+                                <button
+                                    onClick={() => setShowAllTags((prev) => !prev)}
+                                    className="self-start mt-2 text-indigo-400 hover:text-indigo-200 text-sm transition"
                                 >
-                                    {tag.name}
-                                </Link>
-                            ))}
+                                    {showAllTags ? "Mostra meno" : "Mostra tutti"}
+                                </button>
+                            )}
                         </div>
+                    )}
+
+                    {/* Purchase Links - posizionata sopra la chat box */}
+                    {stores.length > 0 && (
+                        <section className="my-6 p-4 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 rounded-lg shadow-lg">
+                            <h2 className="text-3xl font-bold text-indigo-200 mb-4 border-b border-indigo-400 pb-2">
+                                Shop This Game!
+                            </h2>
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                {stores.map((store) => (
+                                    <li
+                                        key={store.id}
+                                        className="bg-indigo-700 bg-opacity-60 rounded-md shadow-md hover:bg-indigo-600 transition-colors duration-300"
+                                    >
+                                        <a
+                                            href={store.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-3 p-4 text-indigo-100 hover:text-white"
+                                        >
+                                            {/* Icona shopping cart semplice SVG */}
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6 text-indigo-300 group-hover:text-white transition-colors"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                strokeWidth={2}
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 5m5 0a2 2 0 11-4 0m14-5l-1.5 4.5m0 0a2 2 0 11-4 0m5-5H7"
+                                                />
+                                            </svg>
+
+                                            {/* Nome store con testo grande e chiaro */}
+                                            <span className="font-semibold text-lg truncate">
+                                                {store.url}
+                                            </span>
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
                     )}
 
                     {/* ChatBox o messaggio per registrarsi */}
@@ -248,9 +376,9 @@ export default function GamePage() {
                             </div>
                         </div>
                     )}
-
                 </section>
             )}
         </>
+
     );
 }
