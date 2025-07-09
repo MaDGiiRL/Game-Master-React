@@ -45,7 +45,7 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
     const limitItems = (arr, showAll) => showAll ? arr : arr.slice(0, 3);
 
     return (
-        <div className="mb-15 space-y-15 text-white">
+        <div className="mb-15 space-y-5 text-white">
             {/* GENRES */}
             <div>
                 <button onClick={() => setOpenGenres(!openGenres)} className="text-xl font-bold text-indigo-400 mt-12">
@@ -53,7 +53,7 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
                 </button>
 
                 {openGenres && (
-                    <ul className="bg-gray-800 mt-2 rounded shadow-lg p-2 space-y-1 max-h-80 overflow-y-auto">
+                    <ul className="bg-gray-800 mt-2  p-2 space-y-1 max-h-80 overflow-y-auto">
                         {error && <li className="text-red-400">{error}</li>}
                         {limitItems(genres, showAllGenres).map((genre) => (
                             <li key={genre.id}>
@@ -87,11 +87,11 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
                 </button>
 
                 {openPlatforms && (
-                    <ul className="bg-gray-800 mt-2 rounded shadow-lg p-2 space-y-1 max-h-80 overflow-y-auto">
+                    <ul className="bg-gray-800 mt-2 p-2 space-y-1 max-h-80 overflow-y-auto">
                         {limitItems(platforms, showAllPlatforms).map((platform) => (
                             <li key={platform.id}>
                                 <Link
-                                    to={`/platforms/${platform.id}`} 
+                                    to={`/platforms/${platform.id}`}
                                     className="block px-2 py-1 hover:bg-gray-700 rounded"
                                 >
                                     {platform.name}
@@ -119,7 +119,7 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
                 </button>
 
                 {openRating && (
-                    <ul className="bg-gray-800 mt-2 rounded shadow-lg p-2 space-y-1 max-h-80 overflow-y-auto">
+                    <ul className="bg-gray-800 mt-2  p-2 space-y-1 max-h-80 overflow-y-auto">
                         {limitItems(topRatedGenres, true).map((genre) => (
                             <li key={genre.id}>
                                 <Link
@@ -141,7 +141,7 @@ export default function FiltersDropdown({ selectedGenre, onSelectGenre }) {
                 </button>
 
                 {openAlphabetical && (
-                    <ul className="bg-gray-800 mt-2 rounded shadow-lg p-2 space-y-1">
+                    <ul className="bg-gray-800 mt-2 p-2 space-y-1">
                         <li>
                             <Link
                                 to="/order/asc"

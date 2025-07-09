@@ -9,7 +9,7 @@ export default function CardGame({ game }) {
     const { session } = useContext(SessionContext); 
 
     return (
-        <article className="relative h-[350px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
+        <article className="relative h-[400px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
 
             {/* Immagine con link */}
             <div className="relative">
@@ -48,7 +48,7 @@ export default function CardGame({ game }) {
                 </div>
 
                 {/* Rating */}
-                <p className="text-sm text-gray-400 pt-5">
+                <p className="text-xl text-gray-400 pt-5">
                     ⭐ Rating: <span className="text-white font-medium">{rating || 'N/A'}</span>
                 </p>
 
@@ -56,7 +56,7 @@ export default function CardGame({ game }) {
                 <div className="flex justify-end mt-auto pb-5">
                     <Link
                         to={`/games/${game.slug}/${game.id}`}
-                        className="text-indigo-400 hover:text-indigo-200 text-sm font-medium"
+                        className="text-indigo-400 hover:text-indigo-200 text-xl font-medium"
                     >
                         ➤ Scopri di più
                     </Link>

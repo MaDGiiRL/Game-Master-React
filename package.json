@@ -12,6 +12,8 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
     "@tailwindcss/vite": "^4.1.11",
+    "bootstrap": "^5.3.7",
+    "flowbite": "^3.1.2",
     "i18next": "^25.3.1",
     "i18next-browser-languagedetector": "^8.2.0",
     "react": "^19.1.0",
