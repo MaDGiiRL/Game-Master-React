@@ -8,7 +8,7 @@ export default function CardStore({ store }) {
         <Link
             to={`/stores/${slug}`}
             key={id}
-            className="relative h-[320px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group"
+            className="relative h-[320px]  flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gradient-to-b from-gray-900 to-gray-800 group"
             aria-label={`Vai alla pagina dello store ${name}`}
         >
             {/* Immagine */}

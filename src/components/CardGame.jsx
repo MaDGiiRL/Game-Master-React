@@ -9,7 +9,8 @@ export default function CardGame({ game }) {
     const { session } = useContext(SessionContext); 
 
     return (
-        <article className="relative h-[400px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gray-900 group">
+       <article className="relative h-[400px] flex flex-col justify-between rounded-xl overflow-hidden shadow-xl transition-transform transform hover:scale-[1.02] bg-gradient-to-b from-gray-900 to-gray-800 group">
+
 
             {/* Immagine con link */}
             <div className="relative">
